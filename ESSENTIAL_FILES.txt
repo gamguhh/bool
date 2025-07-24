@@ -1,0 +1,43 @@
+🎱 Enhanced Pool Game - الملفات الأساسية
+
+=== 1. script/Global.js ===
+const LOG = false;
+const BALL_SIZE = 38;
+const BORDER_SIZE = 57;
+const HOLE_RADIUS = 46;
+const DELTA = 1/100;
+let DISPLAY = true;
+let SOUND_ON = true;
+let GAME_STOPPED = true;
+let KEYBOARD_INPUT_ON = true;
+let TRAIN_ITER = 100;
+let AI_ON = true;
+let AI_PLAYER_NUM = 1;
+let DISPLAY_TRAINING = false;
+const MOUSE_SENSITIVITY = 1.0;
+const AIM_LINE_ENABLED = true;
+const POWER_BAR_ENABLED = true;
+const VISUAL_EFFECTS_ENABLED = true;
+const BALL_TRAILS_ENABLED = true;
+const ENHANCED_PHYSICS = true;
+
+=== 2. script/geom/Vector2.js - إضافة دالة dot ===
+Vector2.prototype.dot = function(obj) {
+    return this.x * obj.x + this.y * obj.y;
+}
+
+=== 3. استخدم المستودع الأصلي + التحديثات ===
+الرابط: https://github.com/henshmi/Classic-Pool-Game
+
+ثم استبدل الملفات التالية بالنسخ المحدثة:
+- script/game_objects/Stick.js
+- script/game_objects/Ball.js  
+- script/Canvas2D.js
+- script/GameWorld.js
+- script/Global.js
+
+=== 4. طريقة سريعة ===
+1. حمّل المستودع الأصلي
+2. افتح Cursor Desktop
+3. انسخ الأكواد المحدثة من المحادثة دي
+4. استبدل الملفات المطلوبة
