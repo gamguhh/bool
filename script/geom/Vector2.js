@@ -116,3 +116,7 @@ Vector2.prototype.equals = function (obj) {
 Vector2.prototype.distanceFrom = function(obj){
     return Math.sqrt((this.x-obj.x)*(this.x-obj.x) + (this.y-obj.y)*(this.y-obj.y));
 }
+
+Vector2.prototype.dot = function(obj) {
+    return this.x * obj.x + this.y * obj.y;
+}

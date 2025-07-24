@@ -161,35 +161,65 @@ GameWorld.prototype.handleCollision = function(ball1, ball2, delta){
 
     var dist = ball1NewPos.distanceFrom(ball2NewPos);
 
-    if(dist<BALL_SIZE){
+    if(dist < BALL_SIZE){
         Game.policy.checkColisionValidity(ball1, ball2);
 
-        var power = (Math.abs(ball1.velocity.x) + Math.abs(ball1.velocity.y)) + 
-                    (Math.abs(ball2.velocity.x) + Math.abs(ball2.velocity.y));
-        power = power * 0.00482;
-
-        if(Game.sound && SOUND_ON){
-            var ballsCollide = sounds.ballsCollide.cloneNode(true);
-            ballsCollide.volume = (power/(20))<1?(power/(20)):1;
-            ballsCollide.play();
-        }
-
-        var opposite = ball1.position.y - ball2.position.y;
-        var adjacent = ball1.position.x - ball2.position.x;
-        var rotation = Math.atan2(opposite, adjacent);
-
+        // فيزياء اصطدام أكثر واقعية
+        var dx = ball2.position.x - ball1.position.x;
+        var dy = ball2.position.y - ball1.position.y;
+        var distance = Math.sqrt(dx * dx + dy * dy);
+        
+        // تطبيع متجه الاصطدام
+        var normalX = dx / distance;
+        var normalY = dy / distance;
+        
+        // السرعة النسبية
+        var relativeVelX = ball1.velocity.x - ball2.velocity.x;
+        var relativeVelY = ball1.velocity.y - ball2.velocity.y;
+        
+        // سرعة الاصطدام على المحور العادي
+        var velAlongNormal = relativeVelX * normalX + relativeVelY * normalY;
+        
+        // إذا كانت الكرات تبتعد عن بعضها، لا حاجة لحل الاصطدام
+        if(velAlongNormal > 0) return;
+        
+        // معامل الارتداد
+        var restitution = 0.9;
+        
+        // قوة الاندفاع
+        var impulse = 2 * velAlongNormal / (ball1.mass + ball2.mass);
+        
+        // تطبيق الاندفاع
+        ball1.velocity.x -= impulse * ball2.mass * normalX;
+        ball1.velocity.y -= impulse * ball2.mass * normalY;
+        ball2.velocity.x += impulse * ball1.mass * normalX;
+        ball2.velocity.y += impulse * ball1.mass * normalY;
+        
+        // تطبيق معامل الارتداد
+        ball1.velocity.multiplyWith(restitution);
+        ball2.velocity.multiplyWith(restitution);
+        
         ball1.moving = true;
         ball2.moving = true;
 
-        var velocity2 = new Vector2(90*Math.cos(rotation + Math.PI)*power,90*Math.sin(rotation + Math.PI)*power);
-        ball2.velocity = ball2.velocity.addTo(velocity2);
-
-        ball2.velocity.multiplyWith(0.97);
-
-        var velocity1 = new Vector2(90*Math.cos(rotation)*power,90*Math.sin(rotation)*power);
-        ball1.velocity = ball1.velocity.addTo(velocity1);
-
-        ball1.velocity.multiplyWith(0.97);
+        // تشغيل صوت الاصطدام
+        if(Game.sound && SOUND_ON){
+            var ballsCollide = sounds.ballsCollide.cloneNode(true);
+            var impactStrength = Math.abs(velAlongNormal) / 50;
+            ballsCollide.volume = Math.min(impactStrength, 1);
+            ballsCollide.play();
+        }
+        
+        // فصل الكرات إذا كانت متداخلة
+        var overlap = BALL_SIZE - distance;
+        if(overlap > 0) {
+            var separateX = normalX * overlap * 0.5;
+            var separateY = normalY * overlap * 0.5;
+            ball1.position.x -= separateX;
+            ball1.position.y -= separateY;
+            ball2.position.x += separateX;
+            ball2.position.y += separateY;
+        }
     }
 
 }
@@ -203,6 +233,68 @@ GameWorld.prototype.draw = function () {
     }
 
     this.stick.draw();
+    
+    // رسم مؤشرات اللعبة
+    this.drawGameIndicators();
+};
+
+GameWorld.prototype.drawGameIndicators = function() {
+    // رسم مؤشر دور اللاعب
+    this.drawPlayerTurnIndicator();
+    
+    // رسم حالة الكرة البيضاء إذا كانت في اليد
+    if(Game.policy.foul) {
+        this.drawBallInHandIndicator();
+    }
+    
+    // رسم معلومات القوة والزاوية
+    if(this.stick.visible && !Game.policy.turnPlayed) {
+        this.drawAimingInfo();
+    }
+};
+
+GameWorld.prototype.drawPlayerTurnIndicator = function() {
+    var indicatorText = "Player " + (Game.policy.turn + 1) + "'s Turn";
+    var indicatorColor = Game.policy.turn === 0 ? "yellow" : "red";
+    
+    Canvas2D.drawText(indicatorText, new Vector2(Game.size.x/2, 30), 
+                     new Vector2(0, 0), indicatorColor, "center", "Arial", "24px");
+    
+    // رسم سهم يشير للاعب الحالي
+    var arrowX = Game.policy.turn === 0 ? 100 : Game.size.x - 100;
+    var arrowY = 60;
+    this.drawArrow(arrowX, arrowY, indicatorColor);
+};
+
+GameWorld.prototype.drawArrow = function(x, y, color) {
+    // رسم سهم بسيط
+    Canvas2D.drawLine(x - 20, y, x + 20, y, color, 3);
+    Canvas2D.drawLine(x + 15, y - 10, x + 20, y, color, 3);
+    Canvas2D.drawLine(x + 15, y + 10, x + 20, y, color, 3);
+};
+
+GameWorld.prototype.drawBallInHandIndicator = function() {
+    Canvas2D.drawText("Ball in Hand - Click to place", 
+                     new Vector2(Game.size.x/2, Game.size.y - 50), 
+                     new Vector2(0, 0), "white", "center", "Arial", "18px");
+};
+
+GameWorld.prototype.drawAimingInfo = function() {
+    if(!this.stick.trackMouse) return;
+    
+    // عرض الزاوية
+    var angle = this.stick.rotation * (180 / Math.PI);
+    if(angle < 0) angle += 360;
+    
+    var angleText = "Angle: " + Math.round(angle) + "°";
+    Canvas2D.drawText(angleText, new Vector2(Game.size.x - 150, Game.size.y - 80), 
+                     new Vector2(0, 0), "white", "left", "Arial", "14px");
+    
+    // عرض المسافة من الماوس للكرة البيضاء
+    var distance = Mouse.position.distanceFrom(this.whiteBall.position);
+    var distanceText = "Distance: " + Math.round(distance) + "px";
+    Canvas2D.drawText(distanceText, new Vector2(Game.size.x - 150, Game.size.y - 60), 
+                     new Vector2(0, 0), "white", "left", "Arial", "14px");
 };
 
 GameWorld.prototype.reset = function () {

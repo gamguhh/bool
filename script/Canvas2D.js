@@ -113,5 +113,58 @@ Canvas2D_Singleton.prototype.drawText = function (text, position, origin, color,
     this._canvasContext.restore();
 };
 
+Canvas2D_Singleton.prototype.drawLine = function (x1, y1, x2, y2, color, lineWidth) {
+    var canvasScale = this.scale;
+    color = typeof color !== 'undefined' ? color : "white";
+    lineWidth = typeof lineWidth !== 'undefined' ? lineWidth : 1;
+
+    this._canvasContext.save();
+    this._canvasContext.scale(canvasScale.x, canvasScale.y);
+    this._canvasContext.beginPath();
+    this._canvasContext.moveTo(x1, y1);
+    this._canvasContext.lineTo(x2, y2);
+    this._canvasContext.strokeStyle = color;
+    this._canvasContext.lineWidth = lineWidth;
+    this._canvasContext.stroke();
+    this._canvasContext.restore();
+};
+
+Canvas2D_Singleton.prototype.drawCircle = function (x, y, radius, color) {
+    var canvasScale = this.scale;
+    color = typeof color !== 'undefined' ? color : "white";
+
+    this._canvasContext.save();
+    this._canvasContext.scale(canvasScale.x, canvasScale.y);
+    this._canvasContext.beginPath();
+    this._canvasContext.arc(x, y, radius, 0, 2 * Math.PI);
+    this._canvasContext.fillStyle = color;
+    this._canvasContext.fill();
+    this._canvasContext.restore();
+};
+
+Canvas2D_Singleton.prototype.drawRectangle = function (x, y, width, height, color) {
+    var canvasScale = this.scale;
+    color = typeof color !== 'undefined' ? color : "white";
+
+    this._canvasContext.save();
+    this._canvasContext.scale(canvasScale.x, canvasScale.y);
+    this._canvasContext.fillStyle = color;
+    this._canvasContext.fillRect(x, y, width, height);
+    this._canvasContext.restore();
+};
+
+Canvas2D_Singleton.prototype.drawRectangleOutline = function (x, y, width, height, color, lineWidth) {
+    var canvasScale = this.scale;
+    color = typeof color !== 'undefined' ? color : "white";
+    lineWidth = typeof lineWidth !== 'undefined' ? lineWidth : 1;
+
+    this._canvasContext.save();
+    this._canvasContext.scale(canvasScale.x, canvasScale.y);
+    this._canvasContext.strokeStyle = color;
+    this._canvasContext.lineWidth = lineWidth;
+    this._canvasContext.strokeRect(x, y, width, height);
+    this._canvasContext.restore();
+};
+
 var Canvas2D = new Canvas2D_Singleton();
 

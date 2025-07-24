@@ -1,37 +1,58 @@
-<h1>Classic-Pool-Game</h1>
-<small>© Chen Shmilovich - 2018.</small>
+<h1>Classic-Pool-Game - Enhanced Edition</h1>
+<small>© Chen Shmilovich - 2018. Enhanced by AI Assistant - 2024.</small>
 <br>
 
 <hr>
 
-**A Typescript remake is now available** [here](https://github.com/henshmi/Classic-8-Ball-Pool).  
-**Same functionality with better and more readable code.**
+**النسخة المحسنة** - تم تطوير هذه النسخة لتصبح أقرب لتجربة 8 Ball Pool الأصلية! 🎱
 
 <hr>
 
-Hello everyone!<br><br>
-The presented code is my first shot at building a javascript game.<br>
-It is a classic 8-ball pool game.
-You can choose to play against a friend, or against an AI, with various difficulty levels.
+مرحباً! 👋<br><br>
+هذه نسخة محسنة من لعبة البلياردو الكلاسيكية مع تحسينات كبيرة في:
+- **التحكم بالماوس** - تجربة أكثر واقعية وسلاسة
+- **الفيزياء** - حركة طبيعية للكرات والاصطدامات
+- **الجرافيك** - تأثيرات بصرية جميلة وخطوط تصويب متقدمة
+- **واجهة المستخدم** - مؤشرات قوة وزاوية ومعلومات مفيدة
 
-Have fun, and good luck!
+<h3>🎮 طريقة اللعب الجديدة:</h3>
 
-<h3>Keys:</h3>
-* 'W' : Increase shot power.<br>
-* 'S' : Decrease shot power.<br>
-* 'Esc' : Return to main menu.<br>
+**التحكم بالماوس (الطريقة الرئيسية):**
+* حرك الماوس لتوجيه العصا 🎯
+* اضغط مع السحب بعيداً عن الكرة البيضاء لزيادة القوة 💪
+* اترك زر الماوس لإطلاق الضربة 🚀
 
-<h3>Mouse:</h3>
-* Left click : shoot.<br>
-* Aim by moving the mouse.<br>
+**التحكم بلوحة المفاتيح (اختياري):**
+* 'W' : زيادة قوة الضربة 📈
+* 'S' : تقليل قوة الضربة 📉
+* 'Esc' : العودة للقائمة الرئيسية 🏠
 
-<h3>Demo:</h3>
+<h3>✨ الميزات الجديدة:</h3>
+* **خط التصويب الذكي** - يعرض مسار الكرة مع الانعكاسات
+* **شريط القوة المرئي** - مع ألوان تدل على مستوى القوة
+* **تأثيرات بصرية** - ظلال، مسارات حركة، وتأثيرات الاصطدام
+* **فيزياء محسنة** - اصطدامات واقعية واحتكاك طبيعي
+* **مؤشرات اللعبة** - عرض دور اللاعب والزاوية والمسافة
+
+<h3>🎯 نصائح للعب أفضل:</h3>
+* استخدم خط التصويب للتخطيط لضرباتك
+* راقب شريط القوة - الأخضر للضربات الناعمة، الأحمر للقوية
+* في وضع "Ball in Hand"، اضغط لوضع الكرة البيضاء
+* استخدم الانعكاسات المعروضة للضربات المعقدة
+
+<h3>🔧 الإعدادات المتاحة (في Global.js):</h3>
+* `AIM_LINE_ENABLED` - تفعيل/إلغاء خط التصويب
+* `POWER_BAR_ENABLED` - تفعيل/إلغاء شريط القوة  
+* `VISUAL_EFFECTS_ENABLED` - تفعيل/إلغاء التأثيرات البصرية
+* `BALL_TRAILS_ENABLED` - تفعيل/إلغاء مسارات الكرات
+
+<h3>🌐 تجربة اللعبة:</h3>
 https://henshmi.github.io/Classic-Pool-Game/
 
-<h3>Screenshots:</h3>
+<h3>📸 لقطات شاشة:</h3>
 <img src="https://image.ibb.co/b9HT6x/screenshots.jpg" style="width: 10px;"></img>
 
-<h3>Credits:</h3>
+<h3>🙏 المصادر:</h3>
 * Building JavaScript Games by Arjan Egges (Apress, 2014):<br>
   https://github.com/apress/building-javascript-games
   <br>
@@ -42,5 +63,13 @@ https://henshmi.github.io/Classic-Pool-Game/
   Bossa Antigua Kevin MacLeod (incompetech.com)<br>
   Licensed under Creative Commons: By Attribution 3.0 License<br>
   http://creativecommons.org/licenses/by/3.0/
+
+<h3>🚀 التحديثات الجديدة:</h3>
+* تحكم محسن بالماوس مثل 8 Ball Pool الأصلية
+* فيزياء واقعية للكرات والاصطدامات  
+* خطوط تصويب مع انعكاسات متعددة
+* شريط قوة تفاعلي مع ألوان متغيرة
+* تأثيرات بصرية للحركة والاصطدامات
+* مؤشرات معلوماتية للزاوية والمسافة
 
 
